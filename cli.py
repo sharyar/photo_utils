@@ -1,14 +1,14 @@
 import typer
 from pathlib import Path
-from utils import move_by_flag_and_copy_dir_structure
+from utils import move_by_flag_and_copy_dir_structure, delete_by_flag
 
 app = typer.Typer()
 
 
 @app.command()
-def remove_forked_files(target_dir: Path):
+def remove_forked_files(target_dir: Path) -> None:
     if not target_dir.is_dir():
-        return f"Invalid Dir: {target_dir}"
+        print("Invalid Dir: {target_dir}")
 
     junk_files = {
         'ds_store': [],
@@ -48,6 +48,11 @@ def move_files_by_flag(source_dir: str, flag: str, destination_dir: str):
     s = Path(source_dir)
     d = Path(destination_dir)
     move_by_flag_and_copy_dir_structure(source_dir=s, flag=flag, destination_dir=d)
+
+@app.command()
+def delete_files_by_flag(source_dir: str, flag: str, simulate: bool = False):
+    s = Path(source_dir)
+    delete_by_flag(source_dir=s, flag=flag, simulate=simulate)
 
 if __name__ == "__main__":
     app()
